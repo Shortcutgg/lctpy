@@ -41,10 +41,11 @@ class worker(Thread):
          del self.keys[ke.scan_code]
 
    def process(self, ke):
-      if ke.event_type == 'down':
-         self.keydown(ke)
-      else:
-         self.keyup(ke)
+      if ke.device == self.device:
+         if ke.event_type == 'down':
+            self.keydown(ke)
+         else:
+            self.keyup(ke)
 
    def run(self):
       keyboard.hook(self.process)
