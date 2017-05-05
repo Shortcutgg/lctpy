@@ -92,7 +92,8 @@ class uploader(Thread):
             rv = requests.post(url, data=payload, files=files)
             print("Uploaded", filename, "-", str(os.stat(full_filename).st_size) + "bytes", "/", rv.status_code)
             f.close()
-            os.remove(full_filename)
+            if rv.status_code == 205:
+               os.remove(full_filename)
 
    def run(self):
       while True:
@@ -103,7 +104,7 @@ class uploader(Thread):
 default_server = 'lc.shortcut.gg'
 default_port = 8001
 default_device = '/dev/input/by-id/usb-qmkbuilder_keyboard-event-kbd'
-default_interval = 300
+default_interval = 900 ;; 15 mins
 
 @click.command()
 @click.option('--server',
