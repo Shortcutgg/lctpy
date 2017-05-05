@@ -14,6 +14,7 @@ def createfile():
    if not os.path.isdir(basedir):
       os.mkdir(basedir)
    ts = datetime.datetime.utcnow().strftime('%Y%m%d-%H%M%S')
+   print("Creating file", ts)
    return open(os.path.join(basedir, str(ts + ".txt")), 'w+')
 
 
@@ -72,8 +73,11 @@ class uploader(Thread):
       current_file = createfile()
       glock.release()
 
+      ignore_file = os.path.basename(current_file.name)
+
       for filename in os.listdir(basedir):
-         if filename.endswith("txt"):
+         if filename.endswith("txt") and not filename == ignore_file:
+            print("Packing", filename)
             full_filename = os.path.join(basedir, filename)
             size = os.stat(full_filename).st_size
             if size > 0:
@@ -85,6 +89,7 @@ class uploader(Thread):
       url = "http://{0}:{1}/".format(self.server, self.port)
       for filename in os.listdir(basedir):
          if filename.endswith("zip"):
+            print("Uploading", filename)
             full_filename = os.path.join(basedir, filename)
             f = open(full_filename, 'rb')
             files = {'file': f}
