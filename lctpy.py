@@ -104,7 +104,7 @@ class uploader(Thread):
 default_server = 'lc.shortcut.gg'
 default_port = 8001
 default_device = '/dev/input/by-id/usb-qmkbuilder_keyboard-event-kbd'
-default_interval = 900 ;; 15 mins
+default_interval = 900 # 15 mins
 
 @click.command()
 @click.option('--server',
