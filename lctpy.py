@@ -132,8 +132,18 @@ def run(server, port, email, device, interval):
    print("Device:".ljust(justify), device)
    print("Interval:".ljust(justify), interval)
    print("-----------------")
-   worker(device).start()
-   uploader(server, port, email, interval).start()
+   worker_t = worker(device)
+   worker_t.setDaemon(True)
+   worker_t.start()
+   uploader_t = uploader(server, port, email, interval)
+   uploader_t.setDaemon(True)
+   uploader_t.start()
+   try:
+      while True:
+         time.sleep(1)
+   except (KeyboardInterrupt, SystemExit):
+      print("exiting")
+      exit(0)
 
 if __name__ == '__main__':
    run()
